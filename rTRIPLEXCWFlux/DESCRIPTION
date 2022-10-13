@@ -1,0 +1,26 @@
+Package: rTRIPLEXCWFlux
+Type: Package
+Title: Carbon-water Coupled Model
+Version: 0.1.0
+Authors@R: c(
+    person("Shulan", "Sun", email = "sslhhxx@163.com", role = c("aut", "cre")),
+    person("Wenhua", "Xiang", email = "xiangwh2005@163.com", role = c("aut"))
+    )
+Author: Shulan Sun [aut, cre],
+  Wenhua Xiang [aut] 
+Maintainer: Shulan Sun <SSLhhxx@163.com>
+Description: The carbon-water coupled model integrates soil water and 
+             water vapor pressure deficits into the stomatal conductance submodel 
+             to estimate net ecosystem production and evapotranspiration in forest ecosystems.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Depends: 
+    R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+URL: https://github.com/ShulanSun/rTRIPLEX_CW_Flux
+
