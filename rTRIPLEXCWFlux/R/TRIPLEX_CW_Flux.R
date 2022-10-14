@@ -107,8 +107,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
 
     # Solar geometry
     Ls<-Input_parameter$Ls # Standard longitude of time zone
-    Le<-Input_parameter$Le # Local longitude, °
-    latitude<-Input_parameter$latitude # Local latitude, °
+    Le<-Input_parameter$Le # Local longitude, degree
+    latitude<-Input_parameter$latitude # Local latitude, degree
     lat<-latitude*3.14/180 # Convert angle to radian, radian
     LAI<-Input_parameter$LAI # Leaf area index, m2 m-2
     Ld[i]<-2*3.14*(Day[i]-1)/365 # Day angle
@@ -243,7 +243,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
     Rg30min[i]<-1800*Rg[i] # Unit coversion, from gC m-2 30 min-1
 
     # Heterotrophic respiration
-    R10<-1.5 # Soil respiration rate in 10 ℃
+    R10<-1.5 # Soil respiration rate in 10 degrees Celsius
     Rh30min[i]<-(R10*Q10^((Tem[i]-10)/10))/48 # Heterotrophic respiration, gC m-2 30 min-1
 
     Re30min[i]<-Rh30min[i]+Rm30min[i]+Rg30min[i] # Ecosystem respiration, gC m-2 30 min-1
@@ -254,10 +254,10 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
     NEP30min[i]<-GPP30min[i]-Re30min[i] # Net ecosystem production, gC m-2 30min-1
 
     # Evapotranspiration by Penman–Monteith model
-    Cp<-1.013*1000 # Specific heat of the air, J kg-1℃-1
+    Cp<-1.013*1000 # Specific heat of the air, J kg-1 degrees Celsius-1
     Ve<-Input_variable$Vms # The wind speed at height HV1, m s-1
     Pdensity<-rep(1.29,x) # Air density, kg m-3
-    r<-0.66/10 # Psychrometric constant, kPa ℃-1
+    r<-0.66/10 # Psychrometric constant, kPa degrees Celsius-1
     HV1<-rep(Input_parameter$HV1,x) # The height at wind measurement, m
     Hcanopy<-rep(Input_parameter$hc,x) # The average canopy height, m
     k<-rep(0.41,x) # Von karman’s constant
@@ -266,7 +266,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
     Z0M[i]<-0.1*Hcanopy[i] # Roughness height for momentum transfer, m
     Z0V[i]<-0.5*Z0M[i] # Roughness height for vapor and heat transfer, m
     d[i]<-0.7*Hcanopy[i] # Zero plane displacement height, m
-    svt[i]<-4098*(0.6108*exp(17.27*Tem[i]/(Tem[i]+237.3)))/(Tem[i]+237.3)^2 # The slope of the saturation vapor pressure against temperature curve, kPa ℃-1
+    svt[i]<-4098*(0.6108*exp(17.27*Tem[i]/(Tem[i]+237.3)))/(Tem[i]+237.3)^2 # The slope of the saturation vapor pressure against temperature curve, kPa degrees Celsius-1
     ra[i]<-log((HV1[i]-d[i])/Z0M[i])*log((HV1[i]-d[i])/Z0V[i])/(k[i]^2*Ve[i]) # Aerodynamic resistance, s m-1
     LES[i]<-(svt[i]*(Rn[i]-G[i])+Pdensity[i]*Cp*VPD1[i]/ra[i])/(svt[i]+r*(1+1/gsms[i]/ra[i])) # Latent heat, w m-2
     ETS[i]<-0.43*LES[i]/(597-0.564*Tem[i]) # Evapotranspiration, mm 30 min-1
@@ -280,7 +280,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
       Ca[i]<-Cappm[i]/1000000*1.013*100000 # Unit conversion: from ppm to Pa
       Ci[i]<-Cippm[i]/1000000*1.013*100000 # Unit conversion: from ppm to Pa
 
-      Vm25<-Input_parameter$Vm25 # Maximum carboxylation rate at 25℃, μmol m-2 s-1
+      Vm25<-Input_parameter$Vm25 # Maximum carboxylation rate at 25degrees Celsius, μmol m-2 s-1
       Rgas<-Input_parameter$Rgas # Molar gas constant, m3 Pa mol-1 K-1
       O2<-Input_parameter$O2 # Oxygen concentration in the atmosphere, Pa
       N<-Input_parameter$N # Leaf nitrogen content, %
@@ -304,8 +304,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
 
       # Solar geometry
       Ls<-Input_parameter$Ls # Standard longitude of time zone
-      Le<-Input_parameter$Le # Local longitude, °
-      latitude<-Input_parameter$latitude # Local latitude, °
+      Le<-Input_parameter$Le # Local longitude, degree
+      latitude<-Input_parameter$latitude # Local latitude, degree
       lat<-latitude*3.14/180 # Convert angle to radian, radian
       LAI<-Input_parameter$LAI # Leaf area index, m2 m-2
       Ld[i]<-2*3.14*(Day[i]-1)/365 # Day angle
@@ -438,7 +438,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
       Rg30min[i]<-1800*Rg[i] # Unit coversion, from gC m-2 30 min-1
 
       # Heterotrophic respiration
-      R10<-1.5# Soil respiration rate in 10 ℃
+      R10<-1.5# Soil respiration rate in 10 degrees Celsius
       Rh30min[i]<-(R10*Q10^((Tem[i]-10)/10))/48 # Heterotrophic respiration, gC m-2 30 min-1
 
       Re30min[i]<-Rh30min[i]+Rm30min[i]+Rg30min[i] # Ecosystem respiration, gC m-2 30 min-1
@@ -449,7 +449,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
       NEP30min[i]<-GPP30min[i]-Re30min[i] # Net ecosystem production, gC m-2 30 min-1
 
       # Evapotranspiration by Penman–Monteith model
-      Cp<-1.013*1000 # Specific heat of the air, J kg-1℃-1
+      Cp<-1.013*1000 # Specific heat of the air, J kg-1 degrees Celsius-1
       Ve<-Input_variable$Vms # The wind speed at height HV1, m s-1
       Pdensity<-rep(1.29,x) # Air density, kg m-3
       r<-0.66/10 # Psychrometric constant, kPa ℃-1
@@ -461,7 +461,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
       Z0M[i]<-0.1*Hcanopy[i] # Roughness height for momentum transfer, m
       Z0V[i]<-0.5*Z0M[i] # Roughness height for vapor and heat transfer, m
       d[i]<-0.7*Hcanopy[i] # Zero plane displacement height, m
-      svt[i]<-4098*(0.6108*exp(17.27*Tem[i]/(Tem[i]+237.3)))/(Tem[i]+237.3)^2 # The slope of the saturation vapor pressure against temperature curve, kPa ℃-1
+      svt[i]<-4098*(0.6108*exp(17.27*Tem[i]/(Tem[i]+237.3)))/(Tem[i]+237.3)^2 # The slope of the saturation vapor pressure against temperature curve, kPa degrees Celsius-1
       ra[i]<-log((HV1[i]-d[i])/Z0M[i])*log((HV1[i]-d[i])/Z0V[i])/(k[i]^2*Ve[i]) # Aerodynamic resistance, s m-1
       LES[i]<-(svt[i]*(Rn[i]-G[i])+Pdensity[i]*Cp*VPD1[i]/ra[i])/(svt[i]+r*(1+1/gsms[i]/ra[i])) # Latent heat, w m-2
       ETS[i]<-0.43*LES[i]/(597-0.564*Tem[i]) # Evapotranspiration, mm 30 min-1
