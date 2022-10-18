@@ -4,11 +4,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ----eval=TRUE----------------------------------------------------------------
-library(rTRIPLEXCWFlux)
-out<-TRIPLEX_CW_Flux (Input_variable=Inputvariable,
-                 Input_parameter=Inputpara)
-head(out)
+## ----eval=FALSE---------------------------------------------------------------
+#  library(rTRIPLEXCWFlux)
+#  out<-TRIPLEX_CW_Flux (Input_variable=Inputvariable,
+#                   Input_parameter=Inputpara,
+#                   overyear = TRUE)
+#  head(out)
 
 ## ----echo=FALSE,out.width ="60%",fig.align = 'center'-------------------------
 knitr::include_graphics("../man/Figures/ET_seasonal19.png")

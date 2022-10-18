@@ -1,14 +1,20 @@
-#' Carbon-water coupled model
-#' a carbon-water coupled model integrated soil moisture and vapor pressure deficit into the stomatal conductance sub-model to estimate net ecosystem production and evapotranspiration in forest ecosystems
-#' @param Input_variable Input variables of model
-#' @param Input_parameter Input parameters of model
+#' @title Runs a TRIPLEX-CW-Flux model simulation
+#' @description Runs the TRIPLEX-CW-Flux model. For more details on input variables and parameters and structure of input visit \code{\link{data}}.
 #'
-#' @return the charts of simulated result for NEP and ET at 30 min scale, and monthly variation of the input environmental factors
+#' @param Input_variable A table as described in \code{\link{Inputpara}} containing the information about input variables.
+#' @param Input_parameter A table as described in \code{\link{Inputvariable}} containing the information about input parameters.
+#' @param overyear If overyear is 'TRUE', this means that the input data is more than one year. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.
+#'
+#' @return A list with class "result" containing the simulated results and charts for NEP and ET at 30 min scale, and monthly variation of the input environmental factors
 #' @export
 #'
 #' @examples
 #' library(rTRIPLEXCWFlux)
-#' TRIPLEX_CW_Flux (Input_variable=Inputvariable,Input_parameter=Inputpara)
+#' TRIPLEX_CW_Flux (Input_variable=onemonth_exam,Input_parameter=Inputpara,overyear=FALSE)
+#'
+#' @references
+#' Evaporation and Environment. Symposia of the Society for Experimental Biology, 19, 205-234. Available at the following web site: \url{https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith/428f880c29b7af69e305a2bf73e425dfb9d14ec8}
+#' Zhou, X.L., Peng, C.H., Dang, Q.L., Sun, J.F., Wu, H.B., &Hua, D. (2008). Simulating carbon exchange in Canadian Boreal forests: I. Model structure, validation, and sensitivity analysis. Ecological Modelling,219(3-4), 287-299. \doi{https://doi.org/10.1016/j.ecolmodel.2008.07.011}
 #'
 #' @importFrom grDevices dev.new
 #' @importFrom graphics abline axis barplot box curve
@@ -16,24 +22,13 @@
 #' @importFrom graphics legend mtext par points text
 
 
-TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
+TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
+                           overyear=FALSE) {
 
-  # Divided into four seasons for further analysis
-  Input_variable$season<-ifelse(Input_variable$Month>=3&Input_variable$Month<=5,
-                                "Spring",
-                                ifelse(Input_variable$Month>=6&
-                                         Input_variable$Month<=8,"Summer",
-                                       ifelse(Input_variable$Month>=9&
-                                                Input_variable$Month<=11,
-                                              "Autumn","Winter")))
+  ## To maintain user's original options
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
 
-  Input_variable$seasonnum<-ifelse(Input_variable$Month>=3&
-                                     Input_variable$Month<=5,1,
-                                   ifelse(Input_variable$Month>=6&
-                                            Input_variable$Month<=8,2,
-                                          ifelse(Input_variable$Month>=9&
-                                                   Input_variable$Month<=11
-                                                 ,3,4)))
 
   # Measured net ecosystem production and evapotranspiration
   Input_variable$ObserveNEE30<-Input_variable$NEE*1800/1000/44*12*(-1)
@@ -475,106 +470,6 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
   result<-data.frame(Input_variable,NEP30min,ETS,GPP30min,Re30min)
   #View(result)
 
-  # Draw the graph of Simulated ET results in four seasons
-  dev.new(title = "Simulated results of seasonal ET",
-          width=10000,height=10000, noRStudioGD = TRUE)
-  par(mfrow=c(2,2))
-  par(oma=c(3,5,1,1),mar=c(5.5,6,1,1))
-  Season2<-c("Spring","Summer","Autumn","Winter")
-  Seasequen2<-c("(a)","(b)","(c)","(d)")
-  Season2<-data.frame(Season2)
-  Seasequen2<-data.frame(Seasequen2)
-  R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4)
-  par(ask=F)
-  sum(result$OETS)
-  sum(result$ETS)
-  for(i in 1:4){
-    subdata<-subset(result,result$seasonnum==i)
-    lmmatri<-lm(subdata$ETS~subdata$OETS)
-    R2[i]<-summary(lmmatri)$r.squared
-    N[i]<-nrow(subdata)
-    RMSE[i]<-sqrt(sum(residuals(lmmatri)^2)/(N[i]-2))
-    intercept[i]<-lmmatri[[1]][1]
-    slope[i]<-lmmatri[[1]][2]
-    plot(subdata$ETS~subdata$OETS,pch=21,las=1,cex.axis=3,xlab="",tck=-0.01,
-         cex.lab=2,font=2,cex=2,ylab="", mgp=c(3, 1.5, 0),col="blue",lwd=3,
-         xlim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1),
-         ylim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1))
-    curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
-    box(lwd=3)
-    mtext(expression(Observed~ET~(mm~30*min^-1)),side = 1,
-          line = 1.5,cex=3,outer = T, font=2)
-    mtext(expression(Simulated~ET~(mm~30*min^-1)),side = 2,
-          line = 1,cex=3,outer = T, font=2)
-    xSeasonalETmin<-min(result$OETS,result$ETS)
-    ySeasonalETmax<-max(result$OETS,result$ETS)
-    text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.03,Seasequen2[i,1],
-         font=2,adj=0,cex=3)
-    text(xSeasonalETmin-0.1+0.08,ySeasonalETmax+0.1-0.03,Season2[i,1],
-         font=2,adj=0,cex=3)
-    text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.1,
-         expression(R^2), adj=0,cex=3)
-    text(xSeasonalETmin-0.1+0.06,ySeasonalETmax+0.1-0.1,"=",
-         adj=0,cex=3)
-    text(xSeasonalETmin-0.1+0.1,ySeasonalETmax+0.1-0.1,
-         round(R2[i],2),adj=0,cex=3)
-    text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.16,
-         "RMSE=", adj=0,cex=3)
-    text(xSeasonalETmin-0.1+0.18,ySeasonalETmax+0.1-0.16,
-         round(RMSE[i],2), adj=0,cex=3)
-  }
-
-  # Draw the graph of Simulated NEP results in four seasons
-  dev.new(title = "Simulated results of seasonal NEP",
-          width=10000,height=10000,noRStudioGD = TRUE)
-  par(mfrow=c(2,2))
-  par(oma=c(3,5,1,1),mar=c(5.5,6,1,1))
-  Season1<-c("Spring","Summer","Autumn","Winter")
-  Seasequen1<-c("(a)","(b)","(c)","(d)")
-  Season1<-data.frame(Season1)
-  Seasequen1<-data.frame(Seasequen1)
-  R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4)
-  par(ask=F)
-  for(i in 1:4){
-    subdata<-subset(result,result$seasonnum==i)
-    lmmatri<-lm(subdata$NEP30min~subdata$ObserveNEE30)
-    R2[i]<-summary(lmmatri)$r.squared
-    N[i]<-nrow(subdata)
-    RMSE[i]<-sqrt(sum(residuals(lmmatri)^2)/(N[i]-2))
-    intercept[i]<-lmmatri[[1]][1]
-    slope[i]<-lmmatri[[1]][2]
-    plot(subdata$NEP30min~subdata$ObserveNEE30,pch=21,las=1,cex.axis=3,xlab="",
-         cex.lab=2,font=2,cex=2,ylab="", col="blue",
-         lwd=3,tck=-0.01, mgp=c(3, 1.5, 0),
-         xlim=c(min(result$NEP30min,result$ObserveNEE30)-0.2,
-                max(result$NEP30min,result$ObserveNEE30)+0.2),
-         ylim=c(min(result$NEP30min,result$ObserveNEE30)-0.2,
-                max(result$NEP30min,result$ObserveNEE30)+0.2))
-
-    curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
-    box(lwd=3)
-    mtext(expression(Observed~NEP~(g~C~m^-2~30*min^-1)),side = 1,line = 1.5,
-          cex=3,outer = T, font=2)
-    mtext(expression(Simulated~NEP~(g~C~m^-2~30*min^-1)),side = 2,line = 1,
-          cex=3,outer = T, font=2)
-    xSeasonalNEPmin<-min(result$NEP30min,result$ObserveNEE30)
-    ySeasonalNEPmax<-max(result$NEP30min,result$ObserveNEE30)
-    text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.03,
-         Seasequen1[i,1], font=2,adj=0,cex=3)
-    text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.03,
-         Season1[i,1], font=2,adj=0,cex=3)
-    text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.15,
-         expression(R^2), adj=0,cex=3)
-    text(xSeasonalNEPmin-0.2+0.12,ySeasonalNEPmax+0.2-0.15,
-         "=", adj=0,cex=3)
-    text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.15,
-         round(R2[i],2),adj=0,cex=3)
-    text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.25,
-         "RMSE=", adj=0,cex=3)
-    text(xSeasonalNEPmin-0.2+0.35,ySeasonalNEPmax+0.2-0.25,
-         round(RMSE[i],2), adj=0,cex=3)
-  }
-
   # Draw the graph of Simulated NEP and ET
   dev.new(title = "Simulated results of NEP and ET", width=6400,height=3200,
           noRStudioGD = TRUE)
@@ -626,134 +521,261 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter) {
   text(xETmin-0.1+0.23,yETmax+0.1-0.08,
        round(sqrt(sum(residuals(lm.sol2)^2)/(nrow(result)-2)),2), adj=0,cex=2)
 
-  # Draw the graph of diurnal dynamics for observed and simulated NEP
-  dev.new(title = "Diurnal dynamics of observed and simulated NEP",
-          width=22000,height=25000, noRStudioGD = TRUE)
-  par(mfrow=c(6,2))
-  par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
-  month2<-c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
-  sequen1<-c("(a)","(b)","(c)","(d)","(e)","(f)","(g)","(h)","(i)","(j)","(k)","(l)")
-  month2<-data.frame(month2)
-  sequen1<-data.frame(sequen1)
-  for(i in 1:12){
-    subdata<-subset(result,result$Month==i)
-    length(subdata$OETS)
-    index1<-(1:length(subdata$OETS))
-    lab1<-seq(min(subdata$DOY),max(subdata$DOY),2)
-    time1<-index1/48
-    par(mar=c(3,5,1,1))
-    plot(subdata$ETS~time1,type="l",las=1,cex.axis=3,xlab="",cex.lab=3,
-         ylab="",col="red",lwd=4,xaxt="n",
-         ylim=c((min(subdata$OETS)-0.05),
-                (max(subdata$OETS)+0.15)))#yaxt="n",mgp=c(5, 1, 0),
+  yeardata<-function(){
+
+    # Divided into four seasons for further analysis
+    result$season<-ifelse(result$Month>=3&result$Month<=5,
+                                  "Spring",
+                                  ifelse(result$Month>=6&
+                                           result$Month<=8,"Summer",
+                                         ifelse(result$Month>=9&
+                                                  result$Month<=11,
+                                                "Autumn","Winter")))
+
+    result$seasonnum<-ifelse(result$Month>=3&
+                                       result$Month<=5,1,
+                                     ifelse(result$Month>=6&
+                                              result$Month<=8,2,
+                                            ifelse(result$Month>=9&
+                                                     result$Month<=11
+                                                   ,3,4)))
+
+    # Draw the graph of Simulated ET results in four seasons
+    dev.new(title = "Simulated results of seasonal ET",
+            width=10000,height=10000, noRStudioGD = TRUE)
+    par(mfrow=c(2,2))
+    par(oma=c(3,5,1,1),mar=c(5.5,6,1,1))
+    Season2<-c("Spring","Summer","Autumn","Winter")
+    Seasequen2<-c("(a)","(b)","(c)","(d)")
+    Season2<-data.frame(Season2)
+    Seasequen2<-data.frame(Seasequen2)
+    R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4)
+    par(ask=F)
+    sum(result$OETS)
+    sum(result$ETS)
+    for(i in 1:4){
+      subdata<-subset(result,result$seasonnum==i)
+      lmmatri<-lm(subdata$ETS~subdata$OETS)
+      R2[i]<-summary(lmmatri)$r.squared
+      N[i]<-nrow(subdata)
+      RMSE[i]<-sqrt(sum(residuals(lmmatri)^2)/(N[i]-2))
+      intercept[i]<-lmmatri[[1]][1]
+      slope[i]<-lmmatri[[1]][2]
+      plot(subdata$ETS~subdata$OETS,pch=21,las=1,cex.axis=3,xlab="",tck=-0.01,
+           cex.lab=2,font=2,cex=2,ylab="", mgp=c(3, 1.5, 0),col="blue",lwd=3,
+           xlim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1),
+           ylim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1))
+      curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
+      box(lwd=3)
+      mtext(expression(Observed~ET~(mm~30*min^-1)),side = 1,
+            line = 1.5,cex=3,outer = T, font=2)
+      mtext(expression(Simulated~ET~(mm~30*min^-1)),side = 2,
+            line = 1,cex=3,outer = T, font=2)
+      xSeasonalETmin<-min(result$OETS,result$ETS)
+      ySeasonalETmax<-max(result$OETS,result$ETS)
+      text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.03,Seasequen2[i,1],
+           font=2,adj=0,cex=3)
+      text(xSeasonalETmin-0.1+0.08,ySeasonalETmax+0.1-0.03,Season2[i,1],
+           font=2,adj=0,cex=3)
+      text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.1,
+           expression(R^2), adj=0,cex=3)
+      text(xSeasonalETmin-0.1+0.06,ySeasonalETmax+0.1-0.1,"=",
+           adj=0,cex=3)
+      text(xSeasonalETmin-0.1+0.1,ySeasonalETmax+0.1-0.1,
+           round(R2[i],2),adj=0,cex=3)
+      text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.16,
+           "RMSE=", adj=0,cex=3)
+      text(xSeasonalETmin-0.1+0.18,ySeasonalETmax+0.1-0.16,
+           round(RMSE[i],2), adj=0,cex=3)
+    }
+
+    # Draw the graph of Simulated NEP results in four seasons
+    dev.new(title = "Simulated results of seasonal NEP",
+            width=10000,height=10000,noRStudioGD = TRUE)
+    par(mfrow=c(2,2))
+    par(oma=c(3,5,1,1),mar=c(5.5,6,1,1))
+    Season1<-c("Spring","Summer","Autumn","Winter")
+    Seasequen1<-c("(a)","(b)","(c)","(d)")
+    Season1<-data.frame(Season1)
+    Seasequen1<-data.frame(Seasequen1)
+    R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4)
+    par(ask=F)
+    for(i in 1:4){
+      subdata<-subset(result,result$seasonnum==i)
+      lmmatri<-lm(subdata$NEP30min~subdata$ObserveNEE30)
+      R2[i]<-summary(lmmatri)$r.squared
+      N[i]<-nrow(subdata)
+      RMSE[i]<-sqrt(sum(residuals(lmmatri)^2)/(N[i]-2))
+      intercept[i]<-lmmatri[[1]][1]
+      slope[i]<-lmmatri[[1]][2]
+      plot(subdata$NEP30min~subdata$ObserveNEE30,pch=21,las=1,cex.axis=3,xlab="",
+           cex.lab=2,font=2,cex=2,ylab="", col="blue",
+           lwd=3,tck=-0.01, mgp=c(3, 1.5, 0),
+           xlim=c(min(result$NEP30min,result$ObserveNEE30)-0.2,
+                  max(result$NEP30min,result$ObserveNEE30)+0.2),
+           ylim=c(min(result$NEP30min,result$ObserveNEE30)-0.2,
+                  max(result$NEP30min,result$ObserveNEE30)+0.2))
+
+      curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
+      box(lwd=3)
+      mtext(expression(Observed~NEP~(g~C~m^-2~30*min^-1)),side = 1,line = 1.5,
+            cex=3,outer = T, font=2)
+      mtext(expression(Simulated~NEP~(g~C~m^-2~30*min^-1)),side = 2,line = 1,
+            cex=3,outer = T, font=2)
+      xSeasonalNEPmin<-min(result$NEP30min,result$ObserveNEE30)
+      ySeasonalNEPmax<-max(result$NEP30min,result$ObserveNEE30)
+      text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.03,
+           Seasequen1[i,1], font=2,adj=0,cex=3)
+      text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.03,
+           Season1[i,1], font=2,adj=0,cex=3)
+      text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.15,
+           expression(R^2), adj=0,cex=3)
+      text(xSeasonalNEPmin-0.2+0.12,ySeasonalNEPmax+0.2-0.15,
+           "=", adj=0,cex=3)
+      text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.15,
+           round(R2[i],2),adj=0,cex=3)
+      text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.25,
+           "RMSE=", adj=0,cex=3)
+      text(xSeasonalNEPmin-0.2+0.35,ySeasonalNEPmax+0.2-0.25,
+           round(RMSE[i],2), adj=0,cex=3)
+    }
+
+    # Draw the graph of diurnal dynamics for observed and simulated NEP
+    dev.new(title = "Diurnal dynamics of observed and simulated NEP",
+            width=22000,height=25000, noRStudioGD = TRUE)
+    par(mfrow=c(6,2))
+    par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
+    month2<-c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+    sequen1<-c("(a)","(b)","(c)","(d)","(e)","(f)","(g)","(h)","(i)","(j)","(k)","(l)")
+    month2<-data.frame(month2)
+    sequen1<-data.frame(sequen1)
+    for(i in 1:12){
+      subdata<-subset(result,result$Month==i)
+      length(subdata$OETS)
+      index1<-(1:length(subdata$OETS))
+      lab1<-seq(min(subdata$DOY),max(subdata$DOY),2)
+      time1<-index1/48
+      par(mar=c(3,5,1,1))
+      plot(subdata$ETS~time1,type="l",las=1,cex.axis=3,xlab="",cex.lab=3,
+           ylab="",col="red",lwd=4,xaxt="n",
+           ylim=c((min(subdata$OETS)-0.05),
+                  (max(subdata$OETS)+0.15)))#yaxt="n",mgp=c(5, 1, 0),
+      box(lwd=3)
+      mtext("Day of the year",side = 1,line =2,cex=3,outer = T, font=2)
+      mtext(expression(ET~(mm~30*min^-1)),
+            side = 2,line = 1,cex=3,outer = T,font=2)
+      points(subdata$OETS~time1,pch=16,col="black",cex=3)
+      text(1.5,max(subdata$OETS)+0.08,month2[i,1], adj=0,cex=4)
+      text(0,max(subdata$OETS)+0.08,sequen1[i,1], adj=0,cex=4)
+      axis(1,at=seq(0,max(time1)-1,2),tck=0.01,
+           labels = lab1,cex.axis=3,tick = T)#
+    }
+
+    # Draw the graph of diurnal dynamics for observed and simulated ET
+    dev.new(title = "Diurnal dynamics of observed and simulated ET",
+            width=22000,height=25000, noRStudioGD = TRUE)
+    par(mfrow=c(6,2))
+    par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
+    month2<-c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
+    sequen1<-c("(a)","(b)","(c)","(d)","(e)","(f)","(g)","(h)","(i)","(j)","(k)","(l)")
+    month2<-data.frame(month2)
+    sequen1<-data.frame(sequen1)
+    for(i in 1:12){
+      subdata<-subset(result,result$Month==i)
+      length(subdata$ObserveNEE30)
+      index1<-(1:length(subdata$ObserveNEE30))
+      lab1<-seq(min(subdata$DOY),max(subdata$DOY),2)
+      time1<-index1/48
+      par(mar=c(3,5,1,1))
+      plot(subdata$NEP30min~time1,type="l",las=1,cex.axis=3,xlab="",cex.lab=3,
+           ylab="",col="red",lwd=4,xaxt="n",
+           ylim=c((min(subdata$ObserveNEE30)-0.05),
+                  (max(subdata$ObserveNEE30)+0.15)))#yaxt="n",mgp=c(5, 1, 0),
+      box(lwd=3)
+      mtext("Day of the year",side = 1,line =2,cex=3,outer = T, font=2)
+      mtext(expression(NEP~(g~C~m^-2~30*min^-1)),
+            side = 2,line = 1,cex=3,outer = T,font=2)
+      points(subdata$ObserveNEE30~time1,pch=16,col="black",cex=3)
+      text(1.5,max(subdata$ObserveNEE30)+0.08,month2[i,1], adj=0,cex=4)
+      text(0,max(subdata$ObserveNEE30)+0.08,sequen1[i,1], adj=0,cex=4)
+      axis(1,at=seq(0,max(time1)-1,2),tck=0.01,
+           labels = lab1,cex.axis=3,tick = T)#
+    }
+
+    # Draw the graph of environmental factors during the studied period
+    dev.new(title = "Environmental factors",
+            width = 15, height = 5, noRStudioGD = TRUE)
+    par(mfrow=c(3,1))
+    par(oma=c(3,2,1,2))
+    par(mar=c(5,7,2,7))
+
+    par(mar=c(2,6,1,5)) # Rainfall & Ta
+    Ta_mon<-as.data.frame(aggregate(Input_variable$Ta,
+                                    list(Input_variable$Month),mean,na.rm=T))
+
+    rainfall_mon<-as.data.frame(aggregate(Input_variable$Rainfall,
+                                          list(Input_variable$Month),sum,na.rm=T))
+    rainfall_mon<-rainfall_mon[,-1]
+    rainfall_mon<-t(rainfall_mon)
+    barplot(rainfall_mon,ylim = c(0,max(rainfall_mon+20)),cex.axis = 2,ylab = "",
+            space = 0,las=1,col="gray",cex.lab=2,font=2)
     box(lwd=3)
-    mtext("Day of the year",side = 1,line =2,cex=3,outer = T, font=2)
-    mtext(expression(ET~(mm~30*min^-1)),
-          side = 2,line = 1,cex=3,outer = T,font=2)
-    points(subdata$OETS~time1,pch=16,col="black",cex=3)
-    text(1.5,max(subdata$OETS)+0.08,month2[i,1], adj=0,cex=4)
-    text(0,max(subdata$OETS)+0.08,sequen1[i,1], adj=0,cex=4)
-    axis(1,at=seq(0,max(time1)-1,2),tck=0.01,
-         labels = lab1,cex.axis=3,tick = T)#
+    mtext("Rainfall (mm)",side = 2,line = 4,cex=2,outer = F, font=1)
+    axis(1,at=seq(1.5,11.5,2),labels =seq(2,12,2),tick = F,cex.axis=2)
+    legend("topleft",legend ="Rainfall",fill="gray",bty="n",horiz=F,cex=2.5)
+
+    par(new=T)
+    Ta_mon$Ta_x<-seq(0.5,11.5,1)
+    plot(Ta_mon[,2]~Ta_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
+         ylab="",xaxt="n",yaxt="n",pch=20,type='b',lty=3,
+         ylim=c(0,max(Ta_mon[,2]+5)),col="black",lwd=3)
+    axis(side = 4,las=1,mgp=c(3, 1, 0),font=2,cex.axis=2)
+
+    mtext("Temperature",side = 4,line = 4,cex=2,outer = F, font=1)
+    legend("topright","Ta",pch = 20,lty = 3,col = "black",bg="black",
+           cex=2.5,bty="n",horiz = T)
+
+    par(mar=c(2,6,1,5)) # VPD&SWC
+    VPD_mon<-as.data.frame(aggregate(Input_variable$VPDhpa/10,
+                                     list(Input_variable$Month),mean,na.rm=T))
+    SWC_mon<-as.data.frame(aggregate(Input_variable$SVWC30cm,
+                                     list(Input_variable$Month),mean,na.rm=T))
+
+    plot(VPD_mon[,2]~VPD_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
+         ylab="",pch=8,type='b',lty=3,ylim=c(0,max(VPD_mon[,2]+0.5)),
+         col="black",lwd=3,bg="black")
+    mtext("VPD (kPa)",side = 2,line = 4,cex=2,outer = F, font=1)
+
+    par(new=T)
+    plot(SWC_mon[,2]~SWC_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
+         ylab="",xaxt="n",yaxt="n",pch=1,type='b',lty=1,
+         ylim=c(0,max(SWC_mon[,2]+10)),col="black",lwd=3,bg="black")
+    axis(side = 4,las=1,mgp=c(3, 1, 0),font=2,cex.axis=2)
+    box(lwd=3)
+    mtext("SWC (%)",side = 4,line = 4,cex=2,outer = F, font=1)
+    legend("topleft",c("VPD","SWC"),pch = c(8,1),lty = c(3,1),
+           col = c("black","black"),cex=2.5,bty="n",horiz = T)
+
+    par(mar=c(2,6,1,5)) # Rn
+    Rn_mon<-as.data.frame(aggregate(Input_variable$Rn,
+                                    list(Input_variable$Month),
+                                    mean,na.rm=T))
+    plot(Rn_mon[,2]~Rn_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
+         ylab="",pch=17,type='b',lty=3,ylim=c(0,max(Rn_mon[,2]+20)),
+         col="black",lwd=3,bg="black")
+    box(lwd=3)
+    mtext(expression(Rn~(W~m^-2)),side = 2,line = 3,cex=2,outer = F, font=1)
+    legend("topleft","Rn",pch = 17,lty = 3,col = "black",
+           cex=2.5,bty="n",horiz = T)
+    mtext("Month",side = 1,line = 1.5,cex=2,outer =T, font=1)
+
   }
 
-  # Draw the graph of diurnal dynamics for observed and simulated ET
-  dev.new(title = "Diurnal dynamics of observed and simulated ET",
-          width=22000,height=25000, noRStudioGD = TRUE)
-  par(mfrow=c(6,2))
-  par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
-  month2<-c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
-  sequen1<-c("(a)","(b)","(c)","(d)","(e)","(f)","(g)","(h)","(i)","(j)","(k)","(l)")
-  month2<-data.frame(month2)
-  sequen1<-data.frame(sequen1)
-  for(i in 1:12){
-    subdata<-subset(result,result$Month==i)
-    length(subdata$ObserveNEE30)
-    index1<-(1:length(subdata$ObserveNEE30))
-    lab1<-seq(min(subdata$DOY),max(subdata$DOY),2)
-    time1<-index1/48
-    par(mar=c(3,5,1,1))
-    plot(subdata$NEP30min~time1,type="l",las=1,cex.axis=3,xlab="",cex.lab=3,
-         ylab="",col="red",lwd=4,xaxt="n",
-         ylim=c((min(subdata$ObserveNEE30)-0.05),
-                (max(subdata$ObserveNEE30)+0.15)))#yaxt="n",mgp=c(5, 1, 0),
-    box(lwd=3)
-    mtext("Day of the year",side = 1,line =2,cex=3,outer = T, font=2)
-    mtext(expression(NEP~(g~C~m^-2~30*min^-1)),
-          side = 2,line = 1,cex=3,outer = T,font=2)
-    points(subdata$ObserveNEE30~time1,pch=16,col="black",cex=3)
-    text(1.5,max(subdata$ObserveNEE30)+0.08,month2[i,1], adj=0,cex=4)
-    text(0,max(subdata$ObserveNEE30)+0.08,sequen1[i,1], adj=0,cex=4)
-    axis(1,at=seq(0,max(time1)-1,2),tck=0.01,
-         labels = lab1,cex.axis=3,tick = T)#
+  # Whether to input data for more than one year
+  if(overyear==TRUE){
+    yeardata()
   }
 
-  # Draw the graph of environmental factors during the studied period
-  dev.new(title = "Environmental factors",
-          width = 15, height = 5, noRStudioGD = TRUE)
-  par(mfrow=c(3,1))
-  par(oma=c(3,2,1,2))
-  par(mar=c(5,7,2,7))
-
-  par(mar=c(2,6,1,5)) # Rainfall & Ta
-  Ta_mon<-as.data.frame(aggregate(Input_variable$Ta,
-                                  list(Input_variable$Month),mean,na.rm=T))
-
-  rainfall_mon<-as.data.frame(aggregate(Input_variable$Rainfall,
-                                        list(Input_variable$Month),sum,na.rm=T))
-  rainfall_mon<-rainfall_mon[,-1]
-  rainfall_mon<-t(rainfall_mon)
-  barplot(rainfall_mon,ylim = c(0,max(rainfall_mon+20)),cex.axis = 2,ylab = "",
-          space = 0,las=1,col="gray",cex.lab=2,font=2)
-  box(lwd=3)
-  mtext("Rainfall (mm)",side = 2,line = 4,cex=2,outer = F, font=1)
-  axis(1,at=seq(1.5,11.5,2),labels =seq(2,12,2),tick = F,cex.axis=2)
-  legend("topleft",legend ="Rainfall",fill="gray",bty="n",horiz=F,cex=2.5)
-
-  par(new=T)
-  Ta_mon$Ta_x<-seq(0.5,11.5,1)
-  plot(Ta_mon[,2]~Ta_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
-       ylab="",xaxt="n",yaxt="n",pch=20,type='b',lty=3,
-       ylim=c(0,max(Ta_mon[,2]+5)),col="black",lwd=3)
-  axis(side = 4,las=1,mgp=c(3, 1, 0),font=2,cex.axis=2)
-
-  mtext("Temperature",side = 4,line = 4,cex=2,outer = F, font=1)
-  legend("topright","Ta",pch = 20,lty = 3,col = "black",bg="black",
-         cex=2.5,bty="n",horiz = T)
-
-  par(mar=c(2,6,1,5)) # VPD&SWC
-  VPD_mon<-as.data.frame(aggregate(Input_variable$VPDhpa/10,
-                                   list(Input_variable$Month),mean,na.rm=T))
-  SWC_mon<-as.data.frame(aggregate(Input_variable$SVWC30cm,
-                                   list(Input_variable$Month),mean,na.rm=T))
-
-  plot(VPD_mon[,2]~VPD_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
-       ylab="",pch=8,type='b',lty=3,ylim=c(0,max(VPD_mon[,2]+0.5)),
-       col="black",lwd=3,bg="black")
-  mtext("VPD (kPa)",side = 2,line = 4,cex=2,outer = F, font=1)
-
-  par(new=T)
-  plot(SWC_mon[,2]~SWC_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
-       ylab="",xaxt="n",yaxt="n",pch=1,type='b',lty=1,
-       ylim=c(0,max(SWC_mon[,2]+10)),col="black",lwd=3,bg="black")
-  axis(side = 4,las=1,mgp=c(3, 1, 0),font=2,cex.axis=2)
-  box(lwd=3)
-  mtext("SWC (%)",side = 4,line = 4,cex=2,outer = F, font=1)
-  legend("topleft",c("VPD","SWC"),pch = c(8,1),lty = c(3,1),
-         col = c("black","black"),cex=2.5,bty="n",horiz = T)
-
-  par(mar=c(2,6,1,5)) # Rn
-  Rn_mon<-as.data.frame(aggregate(Input_variable$Rn,
-                                  list(Input_variable$Month),
-                                  mean,na.rm=T))
-  plot(Rn_mon[,2]~Rn_mon[,1],las=1,cex.axis=2,xlab="",cex.lab=3,font=2,cex=2,
-       ylab="",pch=17,type='b',lty=3,ylim=c(0,max(Rn_mon[,2]+20)),
-       col="black",lwd=3,bg="black")
-  box(lwd=3)
-  mtext(expression(Rn~(W~m^-2)),side = 2,line = 3,cex=2,outer = F, font=1)
-  legend("topleft","Rn",pch = 17,lty = 3,col = "black",
-         cex=2.5,bty="n",horiz = T)
-  mtext("Month",side = 1,line = 1.5,cex=2,outer =T, font=1)
-  result
+  return(result)
 }
 

@@ -1,6 +1,6 @@
 #' Inputvariable
 #'
-#' Just test number(Description)
+#' Just test dataframe(Description)
 #'
 #' @examples
 #' head(Inputvariable)
@@ -13,3 +13,11 @@
 #' @examples
 #' head(Inputpara)
 "Inputpara"
+
+#' onemonth_exam
+#'
+#' Just test dataframe(Description)
+
+#' @examples
+#' head(onemonth_exam)
+"onemonth_exam"
