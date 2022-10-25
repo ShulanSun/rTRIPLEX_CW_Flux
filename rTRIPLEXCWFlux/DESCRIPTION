@@ -1,7 +1,7 @@
 Package: rTRIPLEXCWFlux
 Type: Package
 Title: Carbon-Water Coupled Model
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Shulan", "Sun", email = "sslhhxx@163.com", role = c("aut", "cre")),
     person("Wenhua", "Xiang", email = "xiangwh2005@163.com", role = c("aut")),

@@ -1,6 +1,6 @@
 ---
 title: "The rTRIPLEX-CW-Flux R package"
-author: Shulan Sun, Wenhua Xiang
+author: Shulan Sun, Wenhua Xiang, Shuai Ouyang, Xiaolu Zhou, Changhui Peng
 date: "`r Sys.Date()`"
 geometry: "left=2.6cm,right=2.6cm,top=2.6cm,bottom=2.6cm"
 output: rmarkdown::html_vignette

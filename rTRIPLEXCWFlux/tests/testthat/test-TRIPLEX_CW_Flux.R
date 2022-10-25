@@ -2,13 +2,19 @@ library(rTRIPLEXCWFlux)
 library(testthat)
 
 test_that("basic model run", {
-  path <- system.file(onemonth_exam, package = "rTRIPLEXCWFlux")
+  path <- system.file(Inputvariable, package = "rTRIPLEXCWFlux")
   path <- system.file(Inputpara, package = "rTRIPLEXCWFlux")
 
+  examdata<-data.frame()
+  for(i in 1:12){
+    subdata<-subset(Inputvariable,Inputvariable$Month==i)
+    mondata<-subset(subdata,subdata$Day<=2)
+    examdata<-rbind(examdata,mondata)
+  }
+
   out <- TRIPLEX_CW_Flux(
-    Input_variable=onemonth_exam,Input_parameter=Inputpara,
-    overyear=FALSE)
+    Input_variable=examdata,Input_parameter=Inputpara,
+    overyear=TRUE)
 
   expect_type(out, "list")
 })
-
