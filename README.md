@@ -1,3 +1,4 @@
+[![Build Status](https://app.travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux.svg?branch=main)](https://app.travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
