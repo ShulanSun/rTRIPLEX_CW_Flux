@@ -8,6 +8,9 @@
 [![R-CMD-check](https://github.com/ShulanSun/rTRIPLEXCWFlux/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShulanSun/rTRIPLEXCWFlux/actions/workflows/R-CMD-check.yaml)
 [![Travis build
 status](https://travis-ci.com/ShulanSun/rTRIPLEXCWFlux.svg?branch=master)](https://travis-ci.com/ShulanSun/rTRIPLEXCWFlux)
+[![R-CMD-check](https://github.com/ShulanSun/rTRIPLEX_CW_Flux/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShulanSun/rTRIPLEX_CW_Flux/actions/workflows/R-CMD-check.yaml)
+[![Travis build
+status](https://travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux.svg?branch=main)](https://travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux)
 <!-- badges: end -->
 
 The goal of rTRIPLEXCWFlux is to …
