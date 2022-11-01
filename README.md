@@ -1,10 +1,10 @@
-[![Build Status](https://app.travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux.svg?branch=main)](https://app.travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # rTRIPLEXCWFlux
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/ShulanSun/rTRIPLEX_CW_Flux/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShulanSun/rTRIPLEX_CW_Flux/actions/workflows/R-CMD-check.yaml)
 [![Travis build
 status](https://travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux.svg?branch=main)](https://travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux)
