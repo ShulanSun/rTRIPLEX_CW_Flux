@@ -10,9 +10,9 @@ A data frame with 1488 rows and 18 variables:
   \item{DATE}{date}
   \item{Vms}{The wind speed at measured height, m s-1}
   \item{Ta}{air temperature, degrees Celsius}
-  \item{RH}{relative humidity, \%}
+  \item{RH}{relative humidity, percent}
   \item{VPDhpa}{vapor pressure deficit, hPa}
-  \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, \%}
+  \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, percent}
   \item{Rn}{net radiation at the canopy surface, W m-2}
   \item{PPFD}{photosynthetic photon flux density, μmol m-2 s-1}
   \item{Rainfall}{rainfall,mm}
