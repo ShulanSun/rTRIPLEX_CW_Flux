@@ -14,14 +14,14 @@ TRIPLEX_CW_Flux(Input_variable, Input_parameter, overyear = FALSE)
 \item{overyear}{If overyear is 'TRUE', this means that the input data is more than one year. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.}
 }
 \value{
-A list with class "result" containing the simulated results and charts for NEP and ET at 30 min scale, and monthly variation of the input environmental factors
+A list with class "result" containing the simulated results and charts for NEP and ET at 30 min scale, and monthly variation of the input environmental factors. More details on the output is \code{\link{result}}
 }
 \description{
 Runs the TRIPLEX-CW-Flux model. For more details on input variables and parameters and structure of input visit \code{\link{data}}.
 }
 \examples{
 library(rTRIPLEXCWFlux)
-TRIPLEX_CW_Flux (Input_variable=onemonth_exam,Input_parameter=Inputpara,overyear=FALSE)
+out<-TRIPLEX_CW_Flux (Input_variable=onemonth_exam,Input_parameter=Inputpara,overyear=FALSE)
 
 }
 \references{
