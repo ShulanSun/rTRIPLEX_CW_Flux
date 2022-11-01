@@ -11,7 +11,7 @@
 #'   \item{VPDhpa}{vapor pressure deficit, hPa}
 #'   \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, percent}
 #'   \item{Rn}{net radiation at the canopy surface, W m-2}
-#'   \item{PPFD}{photosynthetic photon flux density, μmol m-2 s-1}
+#'   \item{PPFD}{photosynthetic photon flux density, umol m-2 s-1}
 #'   \item{Rainfall}{rainfall,mm}
 #'   \item{Month}{the number of month}
 #'   \item{Day}{the day of month}
@@ -37,7 +37,7 @@
 #'   \item{Nm}{maximum nitrogen content, percent}
 #'   \item{m}{coefficient}
 #'   \item{g0}{initial stomatal conductance, m mol m-2 s-1}
-#'   \item{Vm25}{maximum carboxylation rate at 25 degrees Celsius, μmol m-2 s-1}
+#'   \item{Vm25}{maximum carboxylation rate at 25 degrees Celsius, umol m-2 s-1}
 #'   \item{Rgas}{molar gas constant, m3 Pa mol-1 K-1}
 #'   \item{O2}{oxygen concentration in the atmosphere, Pa}
 #'   \item{Ls}{standard longitude of time zone}
@@ -78,7 +78,7 @@
 #'   \item{VPDhpa}{vapor pressure deficit, hPa}
 #'   \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, percent}
 #'   \item{Rn}{net radiation at the canopy surface, W m-2}
-#'   \item{PPFD}{photosynthetic photon flux density, μmol m-2 s-1}
+#'   \item{PPFD}{photosynthetic photon flux density, umol m-2 s-1}
 #'   \item{Rainfall}{rainfall,mm}
 #'   \item{Month}{the number of month}
 #'   \item{Day}{the day of month}
@@ -106,7 +106,7 @@
 #'   \item{VPDhpa}{vapor pressure deficit, hPa}
 #'   \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, percent}
 #'   \item{Rn}{net radiation at the canopy surface, W m-2}
-#'   \item{PPFD}{photosynthetic photon flux density, μmol m-2 s-1}
+#'   \item{PPFD}{photosynthetic photon flux density, umol m-2 s-1}
 #'   \item{Rainfall}{rainfall,mm}
 #'   \item{Month}{the number of month}
 #'   \item{Day}{the day of month}

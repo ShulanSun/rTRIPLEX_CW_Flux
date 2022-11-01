@@ -1,10 +1,10 @@
-#' onemonth_exam
+#' Information about model output
 #'
-#' A dataset containing the list of input variables and their description.Just for example.
+#' A dataset containing the list of output variables and their description.
 #'
-#' @format
-#' A data frame with 1488 rows and 18 variables:
+#' @format A data frame with 1 rows and 31 variables:
 #' \describe{
+#'   \item{X}{sequence}
 #'   \item{DATE}{date}
 #'   \item{Vms}{The wind speed at measured height, m s-1}
 #'   \item{Ta}{air temperature, degrees Celsius}
@@ -12,7 +12,7 @@
 #'   \item{VPDhpa}{vapor pressure deficit, hPa}
 #'   \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, percent}
 #'   \item{Rn}{net radiation at the canopy surface, W m-2}
-#'   \item{PPFD}{photosynthetic photon flux density, μmol m-2 s-1}
+#'   \item{PPFD}{photosynthetic photon flux density, umol m-2 s-1}
 #'   \item{Rainfall}{rainfall,mm}
 #'   \item{Month}{the number of month}
 #'   \item{Day}{the day of month}
@@ -23,6 +23,11 @@
 #'   \item{G}{Soil heat flux, W m-2}
 #'   \item{NEE}{Observed net ecosystem productivity at 30 min scale, mg CO2 m-2 s-1}
 #'   \item{LE}{Observed latent heat at 30 min scale}
+#'   \item{ObserveNEE30}{observed net ecosystem production, gC m-2 30 min-1}
+#'   \item{OETS}{observed evapotranspiration, mm 30 min-1}
+#'   \item{NEP30min}{net ecosystem production, gC m-2 30 min-1}
+#'   \item{ETS}{evapotranspiration, mm 30 min-1}
+#'   \item{GPP30min}{gross primary production, gC m-2 30 min-1}
+#'   \item{Re30min}{ecosystem respiration, gC m-2 30 min-1}
 #' }
-#' @examples
-#' head(onemonth_exam)
+"result"

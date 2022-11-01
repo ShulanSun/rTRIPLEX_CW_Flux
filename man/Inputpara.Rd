@@ -13,7 +13,7 @@ A data frame with 1 rows and 31 variables:
   \item{Nm}{maximum nitrogen content, percent}
   \item{m}{coefficient}
   \item{g0}{initial stomatal conductance, m mol m-2 s-1}
-  \item{Vm25}{maximum carboxylation rate at 25 degrees Celsius, μmol m-2 s-1}
+  \item{Vm25}{maximum carboxylation rate at 25 degrees Celsius, umol m-2 s-1}
   \item{Rgas}{molar gas constant, m3 Pa mol-1 K-1}
   \item{O2}{oxygen concentration in the atmosphere, Pa}
   \item{Ls}{standard longitude of time zone}

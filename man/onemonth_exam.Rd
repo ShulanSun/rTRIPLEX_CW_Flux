@@ -14,7 +14,7 @@ A data frame with 1488 rows and 18 variables:
   \item{VPDhpa}{vapor pressure deficit, hPa}
   \item{SVWC30cm}{soil volumetric moisture at depth of 30 cm, percent}
   \item{Rn}{net radiation at the canopy surface, W m-2}
-  \item{PPFD}{photosynthetic photon flux density, μmol m-2 s-1}
+  \item{PPFD}{photosynthetic photon flux density, umol m-2 s-1}
   \item{Rainfall}{rainfall,mm}
   \item{Month}{the number of month}
   \item{Day}{the day of month}
