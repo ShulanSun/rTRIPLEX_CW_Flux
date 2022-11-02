@@ -1,9 +1,9 @@
 #' @title Runs a TRIPLEX-CW-Flux model simulation
-#' @description Runs the TRIPLEX-CW-Flux model. For more details on input variables and parameters and structure of input visit \code{\link{data}}.
+#' @description Runs the TRIPLEX-CW-Flux model. For more details on input variables and parameters and structure of input visit \code{\link{Inputvariable}} and \code{\link{Inputpara}}.
 #'
 #' @param Input_variable A table as described in \code{\link{Inputpara}} containing the information about input variables.
 #' @param Input_parameter A table as described in \code{\link{Inputvariable}} containing the information about input parameters.
-#' @param overyear If overyear is 'TRUE', this means that the input data is more than one year. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.
+#' @param overyear If overyear is 'TRUE', this means that the input data is full year data. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.
 #'
 #' @return A list with class "result" containing the simulated results and charts for NEP and ET at 30 min scale, and monthly variation of the input environmental factors. More details on the output is \code{\link{result}}
 #' @export

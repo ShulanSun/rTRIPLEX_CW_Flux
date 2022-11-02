@@ -24,7 +24,7 @@ A data frame with 17520 rows and 18 variables:
   \item{Cof}{carbon dioxide concentration in the atmosphere, ppm}
   \item{G}{Soil heat flux, W m-2}
   \item{NEE}{Observed net ecosystem productivity at 30 min scale, mg CO2 m-2 s-1}
-  \item{LE}{Observed latent heat at 30 min scale}
+  \item{LE}{Observed latent heat at 30 min scale, W m-2}
 }
 }
 \usage{
