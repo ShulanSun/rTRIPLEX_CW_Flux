@@ -19,7 +19,7 @@ You can install the development version of rTRIPLEXCWFlux from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ShulanSun/rTRIPLEXCWFlux")
+devtools::install_github("ShulanSun/rTRIPLEX_CW_Flux")
 ```
 
 ## Example

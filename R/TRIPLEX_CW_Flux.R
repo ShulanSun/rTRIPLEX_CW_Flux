@@ -26,8 +26,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
                            overyear=FALSE) {
 
   ## To maintain user's original options
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
+  #oldpar <- par(no.readonly = TRUE)
+  #on.exit(par(oldpar))
 
 
   # Measured net ecosystem production and evapotranspiration
