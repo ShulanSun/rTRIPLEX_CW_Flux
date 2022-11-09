@@ -3,17 +3,20 @@
 #'
 #' @param Input_variable A table as described in \code{\link{Inputpara}} containing the information about input variables.
 #' @param Input_parameter A table as described in \code{\link{Inputvariable}} containing the information about input parameters.
-#' @param overyear If overyear is 'TRUE', this means that the input data is full year data. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.
+#' @param overyear If overyear is 'TRUE', this means that the input data is full year data. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.Otherwise, only one graph for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale is output.
 #'
 #' @return A list with class "result" containing the simulated results and charts for NEP and ET at 30 min scale, and monthly variation of the input environmental factors. More details on the output is \code{\link{result}}
 #' @export
 #'
 #' @examples
 #' library(rTRIPLEXCWFlux)
+#' data(Inputpara)
+#' data(onemonth_exam)
 #' out<-TRIPLEX_CW_Flux (Input_variable=onemonth_exam,Input_parameter=Inputpara,overyear=FALSE)
 #'
 #' @references
 #' Evaporation and Environment. Symposia of the Society for Experimental Biology, 19, 205-234. Available at the following web site: \url{https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith/428f880c29b7af69e305a2bf73e425dfb9d14ec8}
+#'
 #' Zhou, X.L., Peng, C.H., Dang, Q.L., Sun, J.F., Wu, H.B., &Hua, D. (2008). Simulating carbon exchange in Canadian Boreal forests: I. Model structure, validation, and sensitivity analysis. Ecological Modelling,219(3-4), 287-299. \doi{https://doi.org/10.1016/j.ecolmodel.2008.07.011}
 #'
 #' @importFrom grDevices dev.new
@@ -250,10 +253,10 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
 
     # Evapotranspiration by Penman–Monteith model
     Cp<-1.013*1000 # Specific heat of the air, J kg-1 degrees Celsius-1
-    Ve<-Input_variable$Vms # The wind speed at height HV1, m s-1
+    Ve<-Input_variable$Vms # The wind speed at height Hw, m s-1
     Pdensity<-rep(1.29,x) # Air density, kg m-3
     r<-0.66/10 # Psychrometric constant, kPa degrees Celsius-1
-    HV1<-rep(Input_parameter$HV1,x) # The height at wind measurement, m
+    Hw<-rep(Input_parameter$Hw,x) # The height at wind measurement, m
     Hcanopy<-rep(Input_parameter$hc,x) # The average canopy height, m
     k<-rep(0.41,x) # Von karman’s constant
 
@@ -262,7 +265,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     Z0V[i]<-0.5*Z0M[i] # Roughness height for vapor and heat transfer, m
     d[i]<-0.7*Hcanopy[i] # Zero plane displacement height, m
     svt[i]<-4098*(0.6108*exp(17.27*Tem[i]/(Tem[i]+237.3)))/(Tem[i]+237.3)^2 # The slope of the saturation vapor pressure against temperature curve, kPa degrees Celsius-1
-    ra[i]<-log((HV1[i]-d[i])/Z0M[i])*log((HV1[i]-d[i])/Z0V[i])/(k[i]^2*Ve[i]) # Aerodynamic resistance, s m-1
+    ra[i]<-log((Hw[i]-d[i])/Z0M[i])*log((Hw[i]-d[i])/Z0V[i])/(k[i]^2*Ve[i]) # Aerodynamic resistance, s m-1
     LES[i]<-(svt[i]*(Rn[i]-G[i])+Pdensity[i]*Cp*VPD1[i]/ra[i])/(svt[i]+r*(1+1/gsms[i]/ra[i])) # Latent heat, w m-2
     ETS[i]<-0.43*LES[i]/(597-0.564*Tem[i]) # Evapotranspiration, mm 30 min-1
 
@@ -445,10 +448,10 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
 
       # Evapotranspiration by Penman–Monteith model
       Cp<-1.013*1000 # Specific heat of the air, J kg-1 degrees Celsius-1
-      Ve<-Input_variable$Vms # The wind speed at height HV1, m s-1
+      Ve<-Input_variable$Vms # The wind speed at height Hw, m s-1
       Pdensity<-rep(1.29,x) # Air density, kg m-3
       r<-0.66/10 # Psychrometric constant, kPa ℃-1
-      HV1<-rep(Input_parameter$HV1,x) # The height at wind measurement, m
+      Hw<-rep(Input_parameter$Hw,x) # The height at wind measurement, m
       Hcanopy<-rep(Input_parameter$hc,x) # The average canopy height, m
       k<-rep(0.41,x) # Von karman’s constant
 
@@ -457,7 +460,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
       Z0V[i]<-0.5*Z0M[i] # Roughness height for vapor and heat transfer, m
       d[i]<-0.7*Hcanopy[i] # Zero plane displacement height, m
       svt[i]<-4098*(0.6108*exp(17.27*Tem[i]/(Tem[i]+237.3)))/(Tem[i]+237.3)^2 # The slope of the saturation vapor pressure against temperature curve, kPa degrees Celsius-1
-      ra[i]<-log((HV1[i]-d[i])/Z0M[i])*log((HV1[i]-d[i])/Z0V[i])/(k[i]^2*Ve[i]) # Aerodynamic resistance, s m-1
+      ra[i]<-log((Hw[i]-d[i])/Z0M[i])*log((Hw[i]-d[i])/Z0V[i])/(k[i]^2*Ve[i]) # Aerodynamic resistance, s m-1
       LES[i]<-(svt[i]*(Rn[i]-G[i])+Pdensity[i]*Cp*VPD1[i]/ra[i])/(svt[i]+r*(1+1/gsms[i]/ra[i])) # Latent heat, w m-2
       ETS[i]<-0.43*LES[i]/(597-0.564*Tem[i]) # Evapotranspiration, mm 30 min-1
 

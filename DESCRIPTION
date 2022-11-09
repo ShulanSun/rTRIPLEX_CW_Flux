@@ -1,7 +1,7 @@
 Package: rTRIPLEXCWFlux
 Type: Package
 Title: Carbon-Water Coupled Model
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
     person("Shulan", "Sun", email = "sslhhxx@163.com", role = c("aut", "cre")),
     person("Wenhua", "Xiang", email = "xiangwh2005@163.com", role = c("aut")),
@@ -11,7 +11,7 @@ Authors@R: c(
     )
 Author: Shulan Sun [aut, cre], Wenhua Xiang [aut], Shuai Ouyang [aut], Xiaolu Zhou [aut], Changhui Peng [aut]
 Maintainer: Shulan Sun <sslhhxx@163.com>
-Description: A carbon-water coupled model (TRIPLEX-CW-Flux) is based on two well-established models, TRIPLEX-Flux model and Penman–Monteith model, integrates soil water and water vapor pressure deficits into the stomata conductance submodule to estimate net ecosystem production and evapotranspiration in forest ecosystems.<https://github.com/ShulanSun/rTRIPLEX_CW_Flux>.
+Description: A carbon-water coupled model (TRIPLEX-CW-Flux) is based on two well-established models: TRIPLEX-Flux model and Penman–Monteith model, and integrates soil moisture and vapor pressure deficits into the stomata conductance submodule to estimate net ecosystem production and evapotranspiration in forest ecosystems.<https://github.com/ShulanSun/rTRIPLEX_CW_Flux>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

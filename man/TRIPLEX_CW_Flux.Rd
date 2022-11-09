@@ -11,7 +11,7 @@ TRIPLEX_CW_Flux(Input_variable, Input_parameter, overyear = FALSE)
 
 \item{Input_parameter}{A table as described in \code{\link{Inputvariable}} containing the information about input parameters.}
 
-\item{overyear}{If overyear is 'TRUE', this means that the input data is full year data. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.}
+\item{overyear}{If overyear is 'TRUE', this means that the input data is full year data. The outputs of the TRIPLEX_CW_Flux function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.Otherwise, only one graph for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale is output.}
 }
 \value{
 A list with class "result" containing the simulated results and charts for NEP and ET at 30 min scale, and monthly variation of the input environmental factors. More details on the output is \code{\link{result}}
@@ -21,10 +21,13 @@ Runs the TRIPLEX-CW-Flux model. For more details on input variables and paramete
 }
 \examples{
 library(rTRIPLEXCWFlux)
+data(Inputpara)
+data(onemonth_exam)
 out<-TRIPLEX_CW_Flux (Input_variable=onemonth_exam,Input_parameter=Inputpara,overyear=FALSE)
 
 }
 \references{
 Evaporation and Environment. Symposia of the Society for Experimental Biology, 19, 205-234. Available at the following web site: \url{https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith/428f880c29b7af69e305a2bf73e425dfb9d14ec8}
+
 Zhou, X.L., Peng, C.H., Dang, Q.L., Sun, J.F., Wu, H.B., &Hua, D. (2008). Simulating carbon exchange in Canadian Boreal forests: I. Model structure, validation, and sensitivity analysis. Ecological Modelling,219(3-4), 287-299. \doi{https://doi.org/10.1016/j.ecolmodel.2008.07.011}
 }
