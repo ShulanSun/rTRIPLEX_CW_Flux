@@ -480,8 +480,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
   par(oma=c(0,0,1,1),mar=c(4.5,5,1,0.5))
   plot(result$NEP30min~result$ObserveNEE30,pch=21,las=1,
        cex.axis=1.5,cex.lab=1.5,font=2,cex=3 ,mgp=c(3, 0.5, 0), col="blue",lwd=3,tck=-0.01,
-       xlab=expression(Observed~NEP~(g~C~m^-2~30*min^-1)),
-       ylab=expression(Simulated~NEP~(g~C~m^-2~30*min^-1)),
+       xlab=expression(Observed~NEP~(g~C~m^-2~30~min^-1)),
+       ylab=expression(Simulated~NEP~(g~C~m^-2~30~min^-1)),
        xlim=c(min(result$NEP30min,result$ObserveNEE30)-0.2,
               max(result$NEP30min,result$ObserveNEE30)+0.2),
        ylim=c(min(result$NEP30min,result$ObserveNEE30)-0.2,
@@ -494,17 +494,18 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
   curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
   xNEEmin<-min(result$NEP30min,result$ObserveNEE30)
   yNEEmax<-max(result$NEP30min,result$ObserveNEE30)
-  text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.03, expression(R^2), cex=2, adj=0)
-  text(xNEEmin-0.2+0.18,yNEEmax+0.2-0.03,"=", adj=0,cex=2)
-  text(xNEEmin-0.2+0.25,yNEEmax+0.2-0.03,round(summary(lm.sol1)$r.squared,2),
-       adj=0,cex=2)
-  text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.2, "RMSE=", cex=2, adj=0)
-  text(xNEEmin-0.2+0.45,yNEEmax+0.2-0.2,
-       round(sqrt(sum(residuals(lm.sol1)^2)/(nrow(result)-2)),2), adj=0,cex=2)
+  text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.02,"(a)", cex=1.5, adj=0)
+  text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.18, expression(R^2), cex=1.5, adj=0)
+  text(xNEEmin-0.2+0.1,yNEEmax+0.2-0.18,"=", adj=0,cex=1.5)
+  text(xNEEmin-0.2+0.15,yNEEmax+0.2-0.18,round(summary(lm.sol1)$r.squared,2),
+       adj=0,cex=1.5)
+  text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.32, "RMSE=", cex=1.5, adj=0)
+  text(xNEEmin-0.2+0.28,yNEEmax+0.2-0.32,
+       round(sqrt(sum(residuals(lm.sol1)^2)/(nrow(result)-2)),2), adj=0,cex=1.5)
 
   plot(result$ETS~result$OETS,pch=21,las=1,cex.axis=1.5, cex.lab=1.5,
-       xlab=expression(Observed~ET~(mm~30*min^-1)),
-       ylab=expression(Simulated~ET~(mm~30*min^-1)),
+       xlab=expression(Observed~ET~(mm~30~min^-1)),
+       ylab=expression(Simulated~ET~(mm~30~min^-1)),
        xlim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1),
        ylim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1),
        mgp=c(3, 0.5, 0),col="blue",lwd=3,font=2,cex=3,tck=-0.01)
@@ -516,13 +517,14 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
   box(lwd=3)
   xETmin<-min(result$OETS,result$ETS)
   yETmax<-max(result$OETS,result$ETS)
-  text(xETmin-0.1+0.01,yETmax+0.1-0.01, expression(R^2), cex=2, adj=0)
-  text(xETmin-0.1+0.08,yETmax+0.1-0.01,"=", adj=0,cex=2)
-  text(xETmin-0.1+0.15,yETmax+0.1-0.01,
-       round(summary(lm.sol2)$r.squared,2),adj=0,cex=2)
-  text(xETmin-0.1+0.01,yETmax+0.1-0.08, "RMSE=", cex=2, adj=0)
-  text(xETmin-0.1+0.23,yETmax+0.1-0.08,
-       round(sqrt(sum(residuals(lm.sol2)^2)/(nrow(result)-2)),2), adj=0,cex=2)
+  text(xETmin-0.1+0.01,yETmax+0.1-0.01, "(b)", cex=1.5, adj=0)
+  text(xETmin-0.1+0.01,yETmax+0.1-0.08, expression(R^2), cex=1.5, adj=0)
+  text(xETmin-0.1+0.05,yETmax+0.1-0.085,"=", adj=0,cex=1.5)
+  text(xETmin-0.1+0.1,yETmax+0.1-0.08,
+       round(summary(lm.sol2)$r.squared,2),adj=0,cex=1.5)
+  text(xETmin-0.1+0.01,yETmax+0.1-0.15, "RMSE=", cex=1.5, adj=0)
+  text(xETmin-0.1+0.1,yETmax+0.1-0.15,
+       round(sqrt(sum(residuals(lm.sol2)^2)/(nrow(result)-2)),2), adj=0,cex=1.5)
 
   yeardata<-function(){
 
@@ -545,7 +547,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
 
     # Draw the graph of Simulated ET results in four seasons
     dev.new(title = "Simulated results of seasonal ET",
-            width=10000,height=10000, noRStudioGD = TRUE)
+            width=18000,height=15000, noRStudioGD = TRUE)
     par(mfrow=c(2,2))
     par(oma=c(3,5,1,1),mar=c(5.5,6,1,1))
     Season2<-c("Spring","Summer","Autumn","Winter")
@@ -570,31 +572,31 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
            ylim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1))
       curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
       box(lwd=3)
-      mtext(expression(Observed~ET~(mm~30*min^-1)),side = 1,
+      mtext(expression(Observed~ET~(mm~30~min^-1)),side = 1,
             line = 1.5,cex=3,outer = T, font=2)
-      mtext(expression(Simulated~ET~(mm~30*min^-1)),side = 2,
+      mtext(expression(Simulated~ET~(mm~30~min^-1)),side = 2,
             line = 1,cex=3,outer = T, font=2)
       xSeasonalETmin<-min(result$OETS,result$ETS)
       ySeasonalETmax<-max(result$OETS,result$ETS)
       text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.03,Seasequen2[i,1],
-           font=2,adj=0,cex=3)
+           font=2,adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.08,ySeasonalETmax+0.1-0.03,Season2[i,1],
-           font=2,adj=0,cex=3)
+           font=2,adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.1,
-           expression(R^2), adj=0,cex=3)
+           expression(R^2), adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.06,ySeasonalETmax+0.1-0.1,"=",
-           adj=0,cex=3)
+           adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.1,ySeasonalETmax+0.1-0.1,
-           round(R2[i],2),adj=0,cex=3)
+           round(R2[i],2),adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.16,
-           "RMSE=", adj=0,cex=3)
+           "RMSE=", adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.18,ySeasonalETmax+0.1-0.16,
-           round(RMSE[i],2), adj=0,cex=3)
+           round(RMSE[i],2), adj=0,cex=2)
     }
 
     # Draw the graph of Simulated NEP results in four seasons
     dev.new(title = "Simulated results of seasonal NEP",
-            width=10000,height=10000,noRStudioGD = TRUE)
+            width=18000,height=15000,noRStudioGD = TRUE)
     par(mfrow=c(2,2))
     par(oma=c(3,5,1,1),mar=c(5.5,6,1,1))
     Season1<-c("Spring","Summer","Autumn","Winter")
@@ -621,31 +623,31 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
 
       curve(x+0, -100,100,bty="l", col="grey60",add=T,lty=2,lwd=4)
       box(lwd=3)
-      mtext(expression(Observed~NEP~(g~C~m^-2~30*min^-1)),side = 1,line = 1.5,
+      mtext(expression(Observed~NEP~(g~C~m^-2~30~min^-1)),side = 1,line = 1.5,
             cex=3,outer = T, font=2)
-      mtext(expression(Simulated~NEP~(g~C~m^-2~30*min^-1)),side = 2,line = 1,
+      mtext(expression(Simulated~NEP~(g~C~m^-2~30~min^-1)),side = 2,line = 1,
             cex=3,outer = T, font=2)
       xSeasonalNEPmin<-min(result$NEP30min,result$ObserveNEE30)
       ySeasonalNEPmax<-max(result$NEP30min,result$ObserveNEE30)
       text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.03,
-           Seasequen1[i,1], font=2,adj=0,cex=3)
+           Seasequen1[i,1], font=2,adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.03,
-           Season1[i,1], font=2,adj=0,cex=3)
+           Season1[i,1], font=2,adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.15,
-           expression(R^2), adj=0,cex=3)
+           expression(R^2), adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.12,ySeasonalNEPmax+0.2-0.15,
-           "=", adj=0,cex=3)
+           "=", adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.15,
-           round(R2[i],2),adj=0,cex=3)
+           round(R2[i],2),adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.25,
-           "RMSE=", adj=0,cex=3)
+           "RMSE=", adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.35,ySeasonalNEPmax+0.2-0.25,
-           round(RMSE[i],2), adj=0,cex=3)
+           round(RMSE[i],2), adj=0,cex=2)
     }
 
     # Draw the graph of diurnal dynamics for observed and simulated NEP
     dev.new(title = "Diurnal dynamics of observed and simulated NEP",
-            width=22000,height=25000, noRStudioGD = TRUE)
+            width=35000,height=30000, noRStudioGD = TRUE)
     par(mfrow=c(6,2))
     par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
     month2<-c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
@@ -665,18 +667,18 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
                   (max(subdata$OETS)+0.15)))#yaxt="n",mgp=c(5, 1, 0),
       box(lwd=3)
       mtext("Day of the year",side = 1,line =2,cex=3,outer = T, font=2)
-      mtext(expression(ET~(mm~30*min^-1)),
+      mtext(expression(ET~(mm~30~min^-1)),
             side = 2,line = 1,cex=3,outer = T,font=2)
       points(subdata$OETS~time1,pch=16,col="black",cex=3)
-      text(1.5,max(subdata$OETS)+0.08,month2[i,1], adj=0,cex=4)
-      text(0,max(subdata$OETS)+0.08,sequen1[i,1], adj=0,cex=4)
+      text(2,max(subdata$OETS)+0.08,month2[i,1], adj=0,cex=2)
+      text(0,max(subdata$OETS)+0.08,sequen1[i,1], adj=0,cex=2)
       axis(1,at=seq(0,max(time1)-1,2),tck=0.01,
            labels = lab1,cex.axis=3,tick = T)#
     }
 
     # Draw the graph of diurnal dynamics for observed and simulated ET
     dev.new(title = "Diurnal dynamics of observed and simulated ET",
-            width=22000,height=25000, noRStudioGD = TRUE)
+            width=35000,height=30000, noRStudioGD = TRUE)
     par(mfrow=c(6,2))
     par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
     month2<-c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
@@ -696,18 +698,18 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
                   (max(subdata$ObserveNEE30)+0.15)))#yaxt="n",mgp=c(5, 1, 0),
       box(lwd=3)
       mtext("Day of the year",side = 1,line =2,cex=3,outer = T, font=2)
-      mtext(expression(NEP~(g~C~m^-2~30*min^-1)),
+      mtext(expression(NEP~(g~C~m^-2~30~min^-1)),
             side = 2,line = 1,cex=3,outer = T,font=2)
       points(subdata$ObserveNEE30~time1,pch=16,col="black",cex=3)
-      text(1.5,max(subdata$ObserveNEE30)+0.08,month2[i,1], adj=0,cex=4)
-      text(0,max(subdata$ObserveNEE30)+0.08,sequen1[i,1], adj=0,cex=4)
+      text(2,max(subdata$ObserveNEE30)+0.08,month2[i,1], adj=0,cex=2)
+      text(0,max(subdata$ObserveNEE30)+0.08,sequen1[i,1], adj=0,cex=2)
       axis(1,at=seq(0,max(time1)-1,2),tck=0.01,
            labels = lab1,cex.axis=3,tick = T)#
     }
 
     # Draw the graph of environmental factors during the studied period
     dev.new(title = "Environmental factors",
-            width = 15, height = 5, noRStudioGD = TRUE)
+            width = 10, height = 15, noRStudioGD = TRUE)
     par(mfrow=c(3,1))
     par(oma=c(3,2,1,2))
     par(mar=c(5,7,2,7))
@@ -725,7 +727,6 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     box(lwd=3)
     mtext("Rainfall (mm)",side = 2,line = 4,cex=2,outer = F, font=1)
     axis(1,at=seq(1.5,11.5,2),labels =seq(2,12,2),tick = F,cex.axis=2)
-    legend("topleft",legend ="Rainfall",fill="gray",bty="n",horiz=F,cex=2.5)
 
     par(new=T)
     Ta_mon$Ta_x<-seq(0.5,11.5,1)
@@ -735,8 +736,9 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     axis(side = 4,las=1,mgp=c(3, 1, 0),font=2,cex.axis=2)
 
     mtext("Temperature",side = 4,line = 4,cex=2,outer = F, font=1)
-    legend("topright","Ta",pch = 20,lty = 3,col = "black",bg="black",
-           cex=2.5,bty="n",horiz = T)
+    legend(min(Ta_mon[,1]),max(Ta_mon[,2])+7.5,"Rainfall", fill="gray",bty="n",horiz=F,cex=2.5)
+    legend(min(Ta_mon[,1]),max(Ta_mon[,2])+3.5,"Ta", pch = 20,lty = 3,col = "black",bg="black",cex=2.5,bty="n",horiz = T)
+    legend("topright","(a)", cex=2.5,bty="n",horiz = T)
 
     par(mar=c(2,6,1,5)) # VPD&SWC
     VPD_mon<-as.data.frame(aggregate(Input_variable$VPDhpa/10,
@@ -758,6 +760,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     mtext("SWC (%)",side = 4,line = 4,cex=2,outer = F, font=1)
     legend("topleft",c("VPD","SWC"),pch = c(8,1),lty = c(3,1),
            col = c("black","black"),cex=2.5,bty="n",horiz = T)
+    legend("topright","(b)", cex=2.5,bty="n",horiz = T)
 
     par(mar=c(2,6,1,5)) # Rn
     Rn_mon<-as.data.frame(aggregate(Input_variable$Rn,
@@ -770,6 +773,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     mtext(expression(Rn~(W~m^-2)),side = 2,line = 3,cex=2,outer = F, font=1)
     legend("topleft","Rn",pch = 17,lty = 3,col = "black",
            cex=2.5,bty="n",horiz = T)
+    legend("topright","(c)", cex=2.5,bty="n",horiz = T)
     mtext("Month",side = 1,line = 1.5,cex=2,outer =T, font=1)
 
   }
