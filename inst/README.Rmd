@@ -20,38 +20,37 @@ knitr::opts_chunk$set(
 [![Travis build status](https://travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux.svg?branch=main)](https://travis-ci.com/ShulanSun/rTRIPLEX_CW_Flux)
 <!-- badges: end -->
 
-The goal of rTRIPLEXCWFlux is to ...
+## Purpose
+The `rTRIPLEXCWFlux` package encodes the carbon uptake submodule and evapotranspiration submodule of the `TRIPLEX-CW-Flux` model to run the simulation of carbon-water coupling. `TRIPLEX-CW-Flux` model is based on two well-established models, `TRIPLEX-Flux` model ([Zhou et al., 2008](https://doi.org/10.1016/j.ecolmodel.2008.07.011)) and `Penman–Monteith` model ([Monteith, 1965](https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith/428f880c29b7af69e305a2bf73e425dfb9d14ec8)). In the R script, the user only needs to download and load the `rTRIPLEX-CW-Flux` package, and then input the variables and parameters of the model to obtain simulated results. This package accelerates the running speed of the model and facilitates the estimation of carbon sequestration and water consumption in different forest ecosystems using extensive flux observed data.This could make `TRIPLEX-CW-Flux` model free available and more popular in future study.
 
 ## Installation
 
 You can install the development version of rTRIPLEXCWFlux from [GitHub](https://github.com/) with:
 
-``` r
+``` {r,eval=FALSE}
 # install.packages("devtools")
-devtools::install_github("ShulanSun/rTRIPLEX_CW_Flux")
+devtools::install_github(repo="ShulanSun/rTRIPLEX_CW_Flux")
 ```
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to run the package.
+In this example, we run a simulation for a Chinese fir plantation. The input data are provided as internal data in `rTRIPLEXCWFlux`.
+The outputs of the `TRIPLEX_CW_Flux` function are a long format dataframe and charts of simulated result for net ecosystem productivity (NEP) and evapotranspiration (ET) at 30 min scale, and monthly variation of the input environmental factors.
 
-```{r example}
+```{r,eval=FALSE}
 library(rTRIPLEXCWFlux)
+out<-TRIPLEX_CW_Flux (Input_variable=Inputvariable,
+                 Input_parameter=Inputpara,
+                 overyear = TRUE)
+head(out)
 ## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Author
+Shulan Sun, Wenhua Xiang, Shuai Ouyang, Xiaolu Zhou, Changhui Peng
 
-```{r cars}
-summary(cars)
-```
+## Citation
+  Evaporation and Environment. Symposia of the Society for Experimental Biology, 19, 205-234. [https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith](https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith/428f880c29b7af69e305a2bf73e425dfb9d14ec8)
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+  Zhou, X.L., Peng, C.H., Dang, Q.L., Sun, J.F., Wu, H.B., &Hua, D. (2008). Simulating carbon exchange in Canadian Boreal forests: I. Model structure, validation, and sensitivity analysis. Ecological Modelling,219(3-4), 287-299. [https://doi.org/10.1016/j.ecolmodel.2008.07.011](https://doi.org/10.1016/j.ecolmodel.2008.07.011)
