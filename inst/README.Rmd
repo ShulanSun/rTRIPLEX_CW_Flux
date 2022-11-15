@@ -50,7 +50,7 @@ head(out)
 ## Author
 Shulan Sun, Wenhua Xiang, Shuai Ouyang, Xiaolu Zhou, Changhui Peng
 
-## Citation
+## References
   Evaporation and Environment. Symposia of the Society for Experimental Biology, 19, 205-234. [https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith](https://www.semanticscholar.org/paper/Evaporation-and-environment.-Monteith/428f880c29b7af69e305a2bf73e425dfb9d14ec8)
 
   Zhou, X.L., Peng, C.H., Dang, Q.L., Sun, J.F., Wu, H.B., &Hua, D. (2008). Simulating carbon exchange in Canadian Boreal forests: I. Model structure, validation, and sensitivity analysis. Ecological Modelling,219(3-4), 287-299. [https://doi.org/10.1016/j.ecolmodel.2008.07.011](https://doi.org/10.1016/j.ecolmodel.2008.07.011)

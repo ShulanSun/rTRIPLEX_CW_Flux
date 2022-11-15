@@ -60,7 +60,7 @@ head(out)
 
 Shulan Sun, Wenhua Xiang, Shuai Ouyang, Xiaolu Zhou, Changhui Peng
 
-## Citation
+## References
 
 Evaporation and Environment. Symposia of the Society for Experimental
 Biology, 19, 205-234.
