@@ -645,8 +645,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
            round(RMSE[i],2), adj=0,cex=2)
     }
 
-    # Draw the graph of diurnal dynamics for observed and simulated NEP
-    dev.new(title = "Diurnal dynamics of observed and simulated NEP",
+    # Draw the graph of diurnal dynamics for observed and simulated ET
+    dev.new(title = "Diurnal dynamics of observed and simulated ET",
             width=35000,height=30000, noRStudioGD = TRUE)
     par(mfrow=c(6,2))
     par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
@@ -676,8 +676,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
            labels = lab1,cex.axis=3,tick = T)#
     }
 
-    # Draw the graph of diurnal dynamics for observed and simulated ET
-    dev.new(title = "Diurnal dynamics of observed and simulated ET",
+    # Draw the graph of diurnal dynamics for observed and simulated NEP
+    dev.new(title = "Diurnal dynamics of observed and simulated NEP",
             width=35000,height=30000, noRStudioGD = TRUE)
     par(mfrow=c(6,2))
     par(oma=c(5,6,2,4),mar=c(5.5,5.5,3,1))
@@ -736,8 +736,10 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     axis(side = 4,las=1,mgp=c(3, 1, 0),font=2,cex.axis=2)
 
     mtext("Temperature",side = 4,line = 4,cex=2,outer = F, font=1)
-    legend(min(Ta_mon[,1]),max(Ta_mon[,2])+7.5,"Rainfall", fill="gray",bty="n",horiz=F,cex=2.5)
-    legend(min(Ta_mon[,1]),max(Ta_mon[,2])+3.5,"Ta", pch = 20,lty = 3,col = "black",bg="black",cex=2.5,bty="n",horiz = T)
+    legend(min(Ta_mon[,1]),max(Ta_mon[,2])+7.5,"Rainfall",
+           fill="gray",bty="n",horiz=F,cex=2.5)
+    legend(min(Ta_mon[,1]),max(Ta_mon[,2])+3.5,"Ta", pch = 20,
+           lty = 3,col = "black",bg="black",cex=2.5,bty="n",horiz = T)
     legend("topright","(a)", cex=2.5,bty="n",horiz = T)
 
     par(mar=c(2,6,1,5)) # VPD&SWC
