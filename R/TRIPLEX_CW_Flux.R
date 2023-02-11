@@ -474,9 +474,9 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
   #View(result)
 
   # Draw the graph of Simulated NEP and ET
-  dev.new(title = "Simulated results of NEP and ET", width=6400,height=3200,
+  dev.new(title = "Simulated results of NEP and ET", width=3200,height=6400,
           noRStudioGD = TRUE)
-  par(mfrow=c(1,2))
+  par(mfrow=c(2,1))
   par(oma=c(0,0,1,1),mar=c(4.5,5,1,0.5))
   plot(result$NEP30min~result$ObserveNEE30,pch=21,las=1,
        cex.axis=1.5,cex.lab=1.5,font=2,cex=3 ,mgp=c(3, 0.5, 0), col="blue",lwd=3,tck=-0.01,
@@ -502,6 +502,9 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
   text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.32, "RMSE=", cex=1.5, adj=0)
   text(xNEEmin-0.2+0.28,yNEEmax+0.2-0.32,
        round(sqrt(sum(residuals(lm.sol1)^2)/(nrow(result)-2)),2), adj=0,cex=1.5)
+  text(xNEEmin-0.2+0.01,yNEEmax+0.2-0.45, "IA=", cex=1.5, adj=0)
+  text(xNEEmin-0.2+0.15,yNEEmax+0.2-0.45,round(1-sum((result$NEP30min-result$ObserveNEE30)^2)/sum((abs(result$NEP30min-mean(result$ObserveNEE30))+abs(result$ObserveNEE30-mean(result$ObserveNEE30)))^2),2), adj=0,cex=1.5)
+
 
   plot(result$ETS~result$OETS,pch=21,las=1,cex.axis=1.5, cex.lab=1.5,
        xlab=expression(Observed~ET~(mm~30~min^-1)),
@@ -525,6 +528,9 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
   text(xETmin-0.1+0.01,yETmax+0.1-0.15, "RMSE=", cex=1.5, adj=0)
   text(xETmin-0.1+0.1,yETmax+0.1-0.15,
        round(sqrt(sum(residuals(lm.sol2)^2)/(nrow(result)-2)),2), adj=0,cex=1.5)
+  text(xETmin-0.1+0.01,yETmax+0.1-0.25, "IA=", cex=1.5, adj=0)
+  text(xETmin-0.1+0.15,yETmax+0.1-0.25,round(1-sum((result$ETS-result$OETS)^2)/sum((abs(result$ETS-mean(result$OETS))+abs(result$OETS-mean(result$OETS)))^2),2), adj=0,cex=1.5)
+
 
   yeardata<-function(){
 
@@ -554,7 +560,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     Seasequen2<-c("(a)","(b)","(c)","(d)")
     Season2<-data.frame(Season2)
     Seasequen2<-data.frame(Seasequen2)
-    R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4)
+    R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4);seasonET<-rep(0,4)
     par(ask=F)
     sum(result$OETS)
     sum(result$ETS)
@@ -566,6 +572,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
       RMSE[i]<-sqrt(sum(residuals(lmmatri)^2)/(N[i]-2))
       intercept[i]<-lmmatri[[1]][1]
       slope[i]<-lmmatri[[1]][2]
+      seasonET[i]<-sum((subdata$ETS-subdata$OETS)^2)/sum((abs(subdata$ETS-mean(subdata$OETS))+abs(subdata$OETS-mean(subdata$OETS)))^2)
       plot(subdata$ETS~subdata$OETS,pch=21,las=1,cex.axis=3,xlab="",tck=-0.01,
            cex.lab=2,font=2,cex=2,ylab="", mgp=c(3, 1.5, 0),col="blue",lwd=3,
            xlim=c(min(result$OETS,result$ETS)-0.1,max(result$OETS,result$ETS)+0.1),
@@ -592,6 +599,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
            "RMSE=", adj=0,cex=2)
       text(xSeasonalETmin-0.1+0.18,ySeasonalETmax+0.1-0.16,
            round(RMSE[i],2), adj=0,cex=2)
+      text(xSeasonalETmin-0.1+0.01,ySeasonalETmax+0.1-0.22,"IA=", adj=0,cex=2)
+      text(xSeasonalETmin-0.1+0.1,ySeasonalETmax+0.1-0.22,round(1-seasonET[i],2), adj=0,cex=2)
     }
 
     # Draw the graph of Simulated NEP results in four seasons
@@ -603,7 +612,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
     Seasequen1<-c("(a)","(b)","(c)","(d)")
     Season1<-data.frame(Season1)
     Seasequen1<-data.frame(Seasequen1)
-    R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4)
+    R2<-rep(0,4);RMSE<-rep(0,4);intercept<-rep(0,4);slope<-rep(0,4);N<-rep(0,4);seasonNEP<-rep(0,4)
     par(ask=F)
     for(i in 1:4){
       subdata<-subset(result,result$seasonnum==i)
@@ -613,6 +622,7 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
       RMSE[i]<-sqrt(sum(residuals(lmmatri)^2)/(N[i]-2))
       intercept[i]<-lmmatri[[1]][1]
       slope[i]<-lmmatri[[1]][2]
+      seasonNEP[i]<-sum((subdata$NEP30min-subdata$ObserveNEE30)^2)/sum((abs(subdata$NEP30min-mean(subdata$ObserveNEE30))+abs(subdata$ObserveNEE30-mean(subdata$ObserveNEE30)))^2)
       plot(subdata$NEP30min~subdata$ObserveNEE30,pch=21,las=1,cex.axis=3,xlab="",
            cex.lab=2,font=2,cex=2,ylab="", col="blue",
            lwd=3,tck=-0.01, mgp=c(3, 1.5, 0),
@@ -643,6 +653,8 @@ TRIPLEX_CW_Flux<- function(Input_variable,Input_parameter,
            "RMSE=", adj=0,cex=2)
       text(xSeasonalNEPmin-0.2+0.35,ySeasonalNEPmax+0.2-0.25,
            round(RMSE[i],2), adj=0,cex=2)
+      text(xSeasonalNEPmin-0.2+0.01,ySeasonalNEPmax+0.2-0.35,"IA=", adj=0,cex=2)
+      text(xSeasonalNEPmin-0.2+0.2,ySeasonalNEPmax+0.2-0.35,round(1-seasonNEP[i],2), adj=0,cex=2)
     }
 
     # Draw the graph of diurnal dynamics for observed and simulated ET
