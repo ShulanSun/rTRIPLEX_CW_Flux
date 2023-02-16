@@ -10,7 +10,7 @@ Authors@R: c(
     person("Changhui", "Peng", email = "cpeng86@yahoo.com", role = c("aut"))
     )
 Author: Shulan Sun [aut, cre], Wenhua Xiang [aut], Shuai Ouyang [aut], Xiaolu Zhou [aut], Changhui Peng [aut]
-Maintainer: Shulan Sun <sslhhxx@163.com>
+Maintainer: Shulan Sun <sslhhxx@163.com>, Xiaolu Zhou <zhoux1977@163.com>, Wenhua Xiang <xiangwh2005@163.com>
 Description: A carbon-water coupled model (TRIPLEX-CW-Flux) is based on two well-established models: TRIPLEX-Flux model and Penman–Monteith model, and integrates soil moisture and vapor pressure deficits into the stomata conductance submodule to estimate net ecosystem production and evapotranspiration in forest ecosystems.<https://github.com/ShulanSun/rTRIPLEX_CW_Flux>.
 License: MIT + file LICENSE
 Encoding: UTF-8
